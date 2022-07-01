@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Demographics Prediction API</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark flex flex-column">
+    <h1 class="text-white">Demographics Prediction</h1>
+  </nav>
+  <div class="container">
+
+
+    <form class="row" method=post enctype=multipart/form-data action="/upload">
+      <div class="row mb-4 mt-4">
+
+        <label for="file" class="form-label">Upload a csv file to Predict</label>
+        <div class="input-group">
+          <input id="file" type=file class="form-control" name="uploaded-file" accept=".csv" aria-describedby="fileHelp"/>
+          <button type="submit" class="btn btn-secondary">Upload</button>
+        </div>
+        <div id="fileHelp" class="form-text">CSV will be used to predict Demographics.</div>
+        <strong style="color:red">{{file_uploaded}}</strong>
+      </div>
+    </form>
+
+    <form class="row" method="POST" action="/predict">
+      <div class="row mt-4">
+        <button type="submit" class="btn btn-primary">Predict</button>
+      </div>
+    </form>
+
+    <div class="row mt-4">
+      <table class="table table-success table-striped">
+        <thead>
+          <tr class="table-info">
+            {% for col in columns %}
+            <th>{{ col }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr class="table-secondary">
+            {% for col in row %}
+            <td>{{ col }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</body>
+</html>
