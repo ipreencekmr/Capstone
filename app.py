@@ -38,17 +38,21 @@ def predict():
         return render_template('index.html', file_uploaded="FILE NOT FOUND!")
         
     test_df = pd.read_csv(filepath)
-    test_df = test_df.reset_index().drop('index', axis=1)
+    test_df = test_df.reset_index().drop('index', axis=1).drop_duplicates()
 
-    predictor.load_data(test_df)
+    predictor.load_data(test_df.drop('device_id',axis=1))
     gender_preds = predictor.predict_gender()
+    male_probs = predictor.predict_gender_prob()
     age_preds = predictor.predict_age()
-    
+
+    test_df = test_df[['device_id']]
     test_df.loc[:,'gender'] = gender_preds
     test_df.loc[:,'age_group'] = age_preds
-    
-    test_df = test_df.head()
-    
+    test_df.loc[:,'male_probs'] = male_probs
+
+    test_df.loc[:,'gender_campaign'] = test_df.male_probs.apply(predictor.gender_campaign_selector)
+    test_df.loc[:,'age_campaign'] = test_df.age_group.apply(predictor.age_campaign_selector)
+
     test_df.loc[:,'gender'] = test_df.gender.apply(lambda x: 'Female' if x == 0 else 'Male')
     test_df.loc[:,'age_group'] = test_df.age_group.apply(lambda x: '0-24' if x == 0 else '24-32' if x == 1 else '32+')
 
