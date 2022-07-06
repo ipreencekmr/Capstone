@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, send_file, render_template
 import pandas as pd
 import os
 from model import Predictor
@@ -56,7 +56,15 @@ def predict():
     test_df.loc[:,'gender'] = test_df.gender.apply(lambda x: 'Female' if x == 0 else 'Male')
     test_df.loc[:,'age_group'] = test_df.age_group.apply(lambda x: '0-24' if x == 0 else '24-32' if x == 1 else '32+')
 
-    return render_template('index.html', columns=test_df.columns, rows=test_df.values)
+    test_df.to_csv('result.csv', index=False)
+    
+    return render_template('index.html', columns=test_df.columns, rows=test_df.values, is_download=True) 
+
+
+@app.route('/download', methods=['POST'])
+def download():
+    path = "result.csv"
+    return send_file(path, as_attachment=True)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

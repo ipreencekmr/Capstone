@@ -15,9 +15,9 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark flex flex-column">
     <h1 class="text-white">Demographics Prediction</h1>
+    <h2 class="text-white">Campaign Mapping</h2>
   </nav>
   <div class="container">
-
 
     <form class="row" method=post enctype=multipart/form-data action="/upload">
       <div class="row mb-4 mt-4">
@@ -37,6 +37,14 @@
         <button type="submit" class="btn btn-primary">Predict</button>
       </div>
     </form>
+
+    {% if is_download %}
+    <form class="row" method="POST" action="/download">
+      <div class="row mt-4">
+        <button type="submit" class="btn btn-info">Download</button>
+      </div>
+    </form>
+    {% endif %}
 
     <div class="row mt-4">
       <table class="table table-success table-striped">
