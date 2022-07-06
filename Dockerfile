@@ -16,6 +16,7 @@ COPY age_model.pkl /app/
 COPY model.py /app/
 COPY scaler.gz /app/
 COPY test.csv /app/
+COPY KS_Stats.csv /app/
 COPY templates/index.html /app/templates/index.html
 
 
